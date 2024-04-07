@@ -65,6 +65,7 @@ const Home = () => {
                     <Input.Fields
                         placeholder='Código do ingresso'
                         onChangeText={setValue}
+                        autoCapitalize='none'
                     />
                 </Input>
 

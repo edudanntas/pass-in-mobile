@@ -78,7 +78,11 @@ const Register = () => {
                         size={20}
                         color={colors.green[200]}
                     />
-                    <Input.Fields placeholder='Nome completo' onChangeText={setName} />
+                    <Input.Fields
+                        placeholder='Nome completo'
+                        onChangeText={setName}
+                        autoCapitalize='none'
+                    />
                 </Input>
 
                 <Input>
@@ -88,7 +92,10 @@ const Register = () => {
                     />
                     <Input.Fields
                         placeholder='E-mail'
-                        keyboardType='email-address' onChangeText={setEmail} />
+                        keyboardType='email-address'
+                        onChangeText={setEmail}
+                        autoCapitalize='none'
+                    />
                 </Input>
 
                 <Button title='REalizar inscrição' onPress={handleRegister} isLoading={isLoading} />

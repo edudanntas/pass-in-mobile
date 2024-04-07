@@ -7,11 +7,12 @@ import { FontAwesome } from '@expo/vector-icons'
 import { colors } from '@/styles/colors'
 import Button from '@/components/button'
 import * as ImagePicker from 'expo-image-picker'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import QRcode from '@/components/QRcode'
 import { useBadgeStore } from '@/store/badge-store';
 import { useCheckinStore } from '@/store/checkin-store';
 import { router } from 'expo-router';
+import { checkCheckinStatus } from '@/services/checkinStatus'
 
 
 const Ticket = () => {
@@ -20,6 +21,26 @@ const Ticket = () => {
 
     const badgeStore = useBadgeStore()
     const checkinStore = useCheckinStore()
+
+    useEffect(() => {
+        const checkChekinPeriodacally = async () => {
+            try {
+                const checkinStatus = await checkCheckinStatus(badgeStore.data?.id)
+
+                if (checkinStatus) {
+                    checkinStore.save(checkinStatus)
+                }
+            } catch (error) {
+                console.error("Error checking check-in status:", error)
+            }
+        }
+
+        checkChekinPeriodacally()
+
+        const intervalId = setInterval(checkChekinPeriodacally, 5000)
+
+        return () => clearInterval(intervalId);
+    }, [badgeStore.data?.id])
 
     async function handleShare() {
         try {
